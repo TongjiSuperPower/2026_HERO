@@ -21,7 +21,7 @@ bool trigger_block_flag = false;
 //电机掉线检测
 bool motor_alive = true;
 bool yaw_motor_alive = true;
-bool pitch_motor_alive = true;
+bool pitch_motor_alive = false;
 bool fric_motor_alive = true;
 bool chassis_alive = true;
 bool gimbal_alive = true;
@@ -46,8 +46,10 @@ uint32_t stuck_count = 0;
 void Cboard_reset(bool key1);
 //拨弹轮堵转检测函数
 bool trigger_motor_block(void);
+//电机掉线检测函数
+void motor_dead();
 
-extern "C" void detect_task()
+extern "C" void Detect_Task()
 {
   while (1) {
 #ifdef VT03
@@ -58,6 +60,8 @@ extern "C" void detect_task()
 #endif
     //拨弹轮堵转检测
     trigger_block_flag = trigger_motor_block();
+    //电机掉线检测
+    motor_dead();
   }
 }
 
@@ -80,7 +84,7 @@ void motor_dead()
 {
   auto stamp_ms = osKernelSysTick();  // 获取当前的系统时间戳（以毫秒为单位）
   yaw_motor_alive = yaw_motor.is_alive(stamp_ms);
-  //   pitch_motor_alive = pitch_motor.is_alive(stamp_ms);
+  pitch_motor_alive = pitch_motor.is_alive(stamp_ms);
   if (pm02.robot_status.power_management_shooter_output) {
     fric_motor_alive = fric_motor1.is_alive(stamp_ms) && fric_motor2.is_alive(stamp_ms);
   }
@@ -96,12 +100,12 @@ void motor_dead()
     chassis_alive = true;
   }
 
-  // if (pm02.robot_status.power_management_gimbal_output) {
-  //   gimbal_alive = yaw_motor.is_alive(stamp_ms) && pitch_motor.is_alive(stamp_ms);
-  // }
-  // else {
-  //   gimbal_alive = true;
-  // }
+  if (pm02.robot_status.power_management_gimbal_output) {
+    gimbal_alive = yaw_motor.is_alive(stamp_ms) && pitch_motor.is_alive(stamp_ms);
+  }
+  else {
+    gimbal_alive = true;
+  }
 
   if (pm02.robot_status.power_management_shooter_output) {
     shoot_alive = fric_motor1.is_alive(stamp_ms) && fric_motor2.is_alive(stamp_ms) &&

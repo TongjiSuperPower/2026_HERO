@@ -41,6 +41,26 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef * hcan)
       // else if (can2.rx_id == CAN_CAP_ID)
       //     super_cap.read(can2.rx_data, stamp_ms);
     }
+    if (hcan == &hcan1) {
+      can1.recv();
+      if (!can1.frame_type) {
+        if (can1.rx_id == fric_motor1.rx_id) {
+          fric_motor1.read(can1.rx_data, stamp_ms);
+        }
+        else if (can1.rx_id == fric_motor2.rx_id) {
+          fric_motor2.read(can1.rx_data, stamp_ms);
+        }
+        else if (can1.rx_id == fric_motor3.rx_id) {
+          fric_motor3.read(can1.rx_data, stamp_ms);
+        }
+        else if (can1.rx_id == fric_motor4.rx_id) {
+          fric_motor4.read(can1.rx_data, stamp_ms);
+        }
+      }
+      else if (can1.frame_type) {
+        pitch_motor.read(can1.rx_id, can1.rx_data, stamp_ms);
+      }
+    }
   }
 }
 

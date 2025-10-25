@@ -57,10 +57,11 @@ float yaw_cmd_torque = 0.0f;
 extern "C" void Gimbal_Task()
 {
   osDelay(700);  // 等待各个任务初始化完成
-  //射击初始化
-  shoot_mode_init();
   //云台初始化
   gimbal_init();
+  //射击初始化
+  shoot_mode_init();
+
   while (1) {
     //云台电机选择模式
     gimbal_mode_control();

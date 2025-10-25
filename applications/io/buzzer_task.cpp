@@ -22,13 +22,13 @@ extern "C" void Buzzer_Task()
 
 #ifdef HERO_DOG
   for (uint8_t i = 0; i < 3; ++i) {
-    buzzer.start();
+    // buzzer.start();
     osDelay(100);
     buzzer.stop();
     osDelay(100);
   }
   buzzer.set(0, 0);
-  buzzer.start();
+  // buzzer.start();
 #endif
 
   while (true) {

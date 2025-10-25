@@ -84,6 +84,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     sp_middleware/io/adc/adc.cpp
     sp_middleware/motor/dm_motor/dm_motor.cpp
     sp_middleware/motor/super_cap/super_cap.cpp
+    sp_middleware/motor/cybergear_motor/cybergear_motor.cpp
 )
 
 # Add include paths

@@ -7,6 +7,7 @@
 #include "motor/rm_motor/rm_motor.hpp"
 #include "tools/pid/pid.hpp"
 #include "tools/yaw_feedward/yaw_feedward.hpp"
+#include "motor/cybergear_motor/cybergear_motor.hpp"
 
 // -------------------- 控制参数 --------------------
 constexpr float T_GIMBAL = 1e-3;
@@ -47,6 +48,7 @@ constexpr float OFFSET_ANGLE = 0.0f;  // rad
 
 // -------------------- 对外硬件 --------------------
 inline sp::DM_Motor yaw_motor(0x09, 0x19, 3.141593f, 30.0f, 10.0f);
+inline sp::CyberGear_Motor pitch_motor(Master_CAN_ID, CyberGear_CAN_ID, CYBERGEAR_MAX_POSITION, CYBERGEAR_MAX_SPEED, CYBERGEAR_MAX_TORQUE);
 
 // -------------------- 对外调试 --------------------
 extern float yaw_offecd_ecd_angle;

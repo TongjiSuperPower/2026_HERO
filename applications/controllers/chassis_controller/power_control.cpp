@@ -16,7 +16,7 @@ float K[4] = {0.0f, 0.0f, 0.0f, 0.0f};  //缩放系数(-1,1)
 static inline bool float_equal(float a, float b) { return fabs(a - b) < 1e-5f; }
 
 //底盘功率限制函数
-//Chassis_given_torque* Data1为pid计算出来的, Wheel_speed * Data2为当前转速， Wheel_Speed * Data3为预期转速
+//Wheel_Torque * Data1为pid计算出来的目标扭矩, Wheel_speed * Data2为当前转速， Wheel_Speed * Data3为预期转速
 void chassis_power_control(
   Wheel_Torque * Data1, Wheel_Speed * Data2, Wheel_Speed * Data3, float P_max)
 {
@@ -34,8 +34,8 @@ void chassis_power_control(
   //判断各轮电机与目标转速衰减率
   float K_damping[4] = {1.0f, 1.0f, 1.0f, 1.0f};
   float K_damping_max = 0.0f;
-  //各轮电机衰减后目标速度
-  float wheel_damping[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+  //所有电机按照最大速度衰减率缩放后的速度
+  float wheel_speed_damping[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 
   //单个轮电机所需功率
   float cmd_power[4];
@@ -46,13 +46,14 @@ void chassis_power_control(
   //误差置信度
   float error_confidence = 0.0f;
 
+  //判断轮组电机是否在线
   bool wheel_is_alive[4];
   wheel_is_alive[0] = wheel_lf.is_alive(stamp_ms);
   wheel_is_alive[1] = wheel_lr.is_alive(stamp_ms);
   wheel_is_alive[2] = wheel_rf.is_alive(stamp_ms);
   wheel_is_alive[3] = wheel_rr.is_alive(stamp_ms);
 
-  //找到最大预期速度
+  //根据各电机当前速度和目标速度得到最大速度衰减率
   for (int i = 0; i < 4; i++) {
     if (wheel_is_alive[i]) {
       K_damping[i] = fabs(wheel_speed[i] / wheel_target_speed[i]);
@@ -67,14 +68,14 @@ void chassis_power_control(
   //计算允许分配功率、误差
   for (int i = 0; i < 4; i++) {
     if (wheel_is_alive[i]) {
-      wheel_damping[i] = K_damping_max * wheel_target_speed[i];
+      wheel_speed_damping[i] = K_damping_max * wheel_target_speed[i];
       cmd_power[i] = wheel_give_torque[i] * wheel_speed[i] +
                      K1 * wheel_give_torque[i] * wheel_give_torque[i] +
                      K2 * wheel_speed[i] * wheel_speed[i] + K3 / 4.0f;
-      wheel_speed_error[i] = fabs(wheel_speed[i] - wheel_damping[i]);
+      wheel_speed_error[i] = fabs(wheel_speed[i] - wheel_speed_damping[i]);
       sum_cmd_power += cmd_power[i];
       if (float_equal(cmd_power[i], 0.0f) || cmd_power[i] < 0.0f) {
-        allocatable_power += -cmd_power[i];
+        allocatable_power += -cmd_power[i]; //动能回收？
       }
       else {
         sum_wheel_error += wheel_speed_error[i];

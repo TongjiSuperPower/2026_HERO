@@ -11,10 +11,11 @@
 #include "tools/mecanum/mecanum.hpp"
 #include "tools/pid/pid.hpp"
 
-//获取最大功率
+//根据剩余能量和电容情况确定最大功率
 void Pmax_get();
 //基于缓冲能量的功率控制
 void buff_energy_p_limited();
+
 // -------------------- 控制结构 --------------------
 typedef struct
 {
@@ -45,12 +46,12 @@ constexpr float T_CHASSIS = 1e-3f;  // 控制周期, 单位: s
 constexpr float CAP_MAX_POWER = 400.0f;  //16V时电容最大放电功率
 //电容最大放电功率=25*电压
 
-//遥控器速度
+//遥控器平移最大速度
 constexpr float REMOTE_CONTROL_V = 3.0f;
-//键鼠速度
+//键鼠平移速度
 constexpr float KEYBOARD_CONTROL_V = 3.2f;
-//电容模式键鼠平移速度cm/s(飞坡)
-constexpr float KEYBOARD_CAP_CONTROL_V = 4.0f;  //400能飞坡
+//电容模式键鼠平移速度m/s(飞坡)
+constexpr float KEYBOARD_CAP_CONTROL_V = 4.0f;  //400cm/s能飞坡
 //小陀螺角速度rad/s
 constexpr float SPIN_W = 10.0f;  //大约112w
 constexpr float SPIN_V = 1.3f;
