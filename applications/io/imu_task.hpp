@@ -27,9 +27,9 @@ void imu_temp_control(float temp);
 
 #ifdef HERO_DOG
 
-constexpr float GyroXZero = -0.0062657f;
-constexpr float GyroYZero = -0.0010400f;
-constexpr float GyroZZero = -0.0008904f;
+constexpr float GyroXZero = 0.00620746519f;
+constexpr float GyroYZero = -0.00352368597f;
+constexpr float GyroZZero = 0.000081818027f;
 
 #endif
 
@@ -56,5 +56,6 @@ extern float imu_vyaw_filter;
 extern float imu_vpitch_filter;
 extern float ins_eulers[3];
 extern sp::PID imu_temp_pid;
+extern sp::Vision vis;
 
 #endif

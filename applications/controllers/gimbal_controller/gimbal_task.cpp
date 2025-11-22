@@ -154,7 +154,7 @@ void gimbal_cmd()
     //遥控器
     if (Global_Mode == REMOTE) {
       gyro_yaw_angle_add = -remote_yaw * W_MAX;
-      gyro_pitch_angle_add = remote_pitch * W_MAX;
+      gyro_pitch_angle_add = -remote_pitch * W_MAX;
       yaw_target_angle = sp::limit_angle(yaw_target_angle + gyro_yaw_angle_add);
       pitch_target_angle = sp::limit_angle(pitch_target_angle + gyro_pitch_angle_add);
       //pitch轴限角
@@ -171,7 +171,7 @@ void gimbal_cmd()
     if (Global_Mode == KEYBOARD) {
       //陀螺仪控云台
       gyro_yaw_angle_add = -mouse_yaw * MOUSE_DPI;
-      gyro_pitch_angle_add = mouse_pitch * MOUSE_DPI;
+      gyro_pitch_angle_add = -mouse_pitch * MOUSE_DPI;
 
       yaw_target_angle = sp::limit_angle(yaw_target_angle + gyro_yaw_angle_add);
       pitch_target_angle = sp::limit_angle(pitch_target_angle + gyro_pitch_angle_add);

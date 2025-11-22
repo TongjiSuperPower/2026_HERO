@@ -26,6 +26,11 @@ uint16_t pitch_enable_num = 0;
 float pitch_torque;
 float gravity_compensation;
 
+float a;
+float b;
+float c;
+float d;
+
 void motor_enable();
 void chassis_control();
 Wheel_Torque chassis_pid_cal(float lf, float lr, float rf, float rr);
@@ -276,7 +281,7 @@ void gimbal_gyro_control()
   // }
   pitch_speed_pid.calc(pitch_pos_pid.out, imu_vpitch_filter);
   gravity_compensation = cos(OFFSET_ANGLE + imu.pitch) * TOR_PARAM;
-  pitch_torque = pitch_speed_pid.out + gravity_compensation;
+  pitch_torque = -pitch_speed_pid.out + gravity_compensation;
   pitch_motor.cmd(pitch_torque);
   // pitch_motor.cmd(gravity_compensation);
 }
@@ -331,10 +336,14 @@ void gimbal_autoaim_control()
 
   pitch_acc_pid.calc(pitch_target_angle, imu.pitch, vis.pitch_vel, imu.vpitch);
   pitch_torque = PITCH_INERTIA * (vis.pitch_acc + pitch_acc_pid.out) +
-                      PITCH_DAMPING_COEFF * imu.vpitch +
-                      (imu.vpitch > 0 ? 1.0f : -1.0f) * PITCH_COULOMB_FORCE -
-                      std::cos(OFFSET_ANGLE + imu.pitch) * PITCH_GRAVITY_TORQUE;
-  pitch_motor.cmd(pitch_torque);
+                 PITCH_DAMPING_COEFF * imu.vpitch +
+                 (imu.vpitch > 0 ? 1.0f : -1.0f) * PITCH_COULOMB_FORCE -
+                 std::cos(OFFSET_ANGLE + imu.pitch) * PITCH_GRAVITY_TORQUE;
+  a = PITCH_INERTIA * (vis.pitch_acc + pitch_acc_pid.out);
+  b = PITCH_DAMPING_COEFF * imu.vpitch;
+  c = (imu.vpitch > 0 ? 1.0f : -1.0f) * PITCH_COULOMB_FORCE;
+  d = -std::cos(OFFSET_ANGLE + imu.pitch) * PITCH_GRAVITY_TORQUE;
+  pitch_motor.cmd(-pitch_torque);
 #endif
 }
 

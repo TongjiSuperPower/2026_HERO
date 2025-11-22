@@ -16,8 +16,9 @@ constexpr float T_GIMBAL = 1e-3;
 //遥控器模式云台数据
 constexpr float W_MAX = 0.004f;  //rad/ms
 
-constexpr float IMU_PITCH_ANGLE_MAX = 0.50f;   //Pitch轴限位    最大角度0.50
-constexpr float IMU_PITCH_ANGLE_MIN = -0.25f;  //Pitch轴限位    最小角度-0.25
+//pitch向上为负
+constexpr float IMU_PITCH_ANGLE_MAX = 0.25f;   //Pitch轴限位    最大角度0.50
+constexpr float IMU_PITCH_ANGLE_MIN = -0.50f;  //Pitch轴限位    最小角度-0.25
 #endif
 
 #ifdef HERO_THREE_WHEELS
@@ -57,6 +58,8 @@ extern float pitch_target_angle;
 extern float yaw_relative_angle;
 extern float pitch_relative_angle;
 extern float yaw_cmd_torque;
+extern float pitch_torque;
+extern float gravity_compensation;
 
 extern uint16_t gimbal_init_time;
 extern uint16_t gimbal_init_over_time;

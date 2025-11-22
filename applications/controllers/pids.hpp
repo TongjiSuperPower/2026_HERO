@@ -34,7 +34,7 @@ inline sp::PID yaw_encode_pos_pid(T_CONTROL, 10.0f, 0.0f, 0.45f, 3, 1.5, 1.0f, t
 inline sp::PID yaw_encode_speed_pid(
   T_CONTROL, 1.5f, 0.0f, 0.12f, MAX_4310_TORQUE, MAX_4310_TORQUE / 3.0f, 1.0, false, false);
 
-inline sp::PID pitch_encode_pos_pid(T_CONTROL, 13.0f, 100.0f, 0.05f, 5, 0.8, 1.0f, true, false);
+inline sp::PID pitch_encode_pos_pid(T_CONTROL, 18.0f, 100.0f, 0.0f, 5, 0.8, 1.0f, true, false);
 inline sp::PID pitch_encode_speed_pid(
   T_CONTROL, 0.2f, 0.0f, 0.0f, MAX_XIAOMI_TORQUE, 0.1, 1.0f, false, false);
 

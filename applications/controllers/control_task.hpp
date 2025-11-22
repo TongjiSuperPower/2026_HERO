@@ -10,20 +10,25 @@
 //计算力矩控制参数
 #ifdef HERO_DOG
 // m = 0.0617, b = 0.3535, c = 0.3400
-constexpr float YAW_INERTIA = 0.0617f;
-constexpr float YAW_DAMPING_COEFF = 0.3535f;
-constexpr float YAW_COULOMB_FORCE = 0.3400f;
+// m = 0.0716, b = 0.2665, c = 0.3082
+// m = 0.0787, b = 0.2249, c = 0.3071
+// m = 0.0786, b = 0.2343, c = 0.3100
+constexpr float YAW_INERTIA = 0.0786f;
+constexpr float YAW_DAMPING_COEFF = 0.2343f;
+constexpr float YAW_COULOMB_FORCE = 0.3100f;
 
-// m = 0.0057, b = -0.6656, c = 0.0461, d = -1.0432
-// m = 0.0197, b = 0.4528, c = 0.0081, d = 1.7668
-// m = -0.0386, b = 0.9088, c = 0.0221, d = 1.7987
-// m = -0.0365, b = 0.9549, c = 0.0068, d = 1.7802
-constexpr float PITCH_INERTIA = -0.0365f;
-constexpr float PITCH_DAMPING_COEFF = 0.9549f;
-constexpr float PITCH_COULOMB_FORCE = 0.0068f;
-constexpr float PITCH_GRAVITY_TORQUE = 1.7802f;
+// m = 0.0331, b = 0.2112, c = 0.1037, d = 1.8725
+// m = 0.0349, b = 0.2383, c = 0.0796, d = 1.8778
+constexpr float PITCH_INERTIA = 0.0349f;
+constexpr float PITCH_DAMPING_COEFF = 0.2383f;
+constexpr float PITCH_COULOMB_FORCE = 0.0796f;
+constexpr float PITCH_GRAVITY_TORQUE = 1.8778f;
 #endif
 
 extern float pitch_torque;
+extern float a;
+extern float b;
+extern float c;
+extern float d;
 
 #endif

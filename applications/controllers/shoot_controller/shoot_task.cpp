@@ -386,7 +386,10 @@ void shoot_single_permission(void)
     }
   }
   if (Global_Mode == KEYBOARD) {
-    if (Fric_Mode == FRIC_ON && key_shoot && single_shoot_cold_time == 0 && heat_remain > 0.0f) {
+    if (
+      Fric_Mode == FRIC_ON &&
+      (key_shoot || (vis.fire && vis.control && Gimbal_Mode == GIMBAL_AUTO)) &&
+      single_shoot_cold_time == 0 && heat_remain > 0.0f) {
       trigger_target_angle = trigger_motor.angle - SHOOT_ANGLE_ADD;
       single_shoot_cold_time = SHOOT_COLD_TIME;
       single_shoot_over_flag = false;

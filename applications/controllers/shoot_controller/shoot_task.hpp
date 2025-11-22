@@ -3,13 +3,15 @@
 #include "A_HERO_SELECTION.hpp"
 #include "io/vision/vision.hpp"
 #include "motor/rm_motor/rm_motor.hpp"
+#include "motor/dm_motor/dm_motor.hpp"
 #include "referee/pm02/pm02.hpp"
 #include "tools/pid/pid.hpp"
+#include "io/imu_task.hpp"
 // -------------------- 控制参数 --------------------
 constexpr float T_SHOOT = 1e-3f;  // 控制周期, 单位: s
 //摩擦轮转速rad/s
 #ifdef HERO_DOG
-constexpr float FRIC_SPEED = 100.0f;
+constexpr float FRIC_SPEED = 325.0f;
 #endif
 
 #ifdef HERO_THREE_WHEELS
@@ -40,6 +42,7 @@ constexpr float HEAT_PER_SHOT = 100.0f;
 
 // -------------------- 对外硬件 --------------------
 inline sp::RM_Motor trigger_motor(5, sp::RM_Motors::M3508, RADUCTION_RATIO);
+// inline sp::DM_Motor trigger_motor(0x205, 0x205, 2.0f * 3.1415926f, 100.0f, 20.0f);
 inline sp::RM_Motor fric_motor1(1, sp::RM_Motors::M3508, 1);
 inline sp::RM_Motor fric_motor2(2, sp::RM_Motors::M3508, 1);
 inline sp::RM_Motor fric_motor3(3, sp::RM_Motors::M3508, 1);
